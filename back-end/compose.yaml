@@ -1,10 +1,42 @@
+version: '3.8'
+
 services:
-  mysql:
-    image: 'mysql:latest'
-    environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+  database:
+    image: mysql:5.7
+    container_name: database
     ports:
-      - '3306'
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: root
+      restart: always
+    volumes:
+      - simplereactprojectvolume001:/var/lib/mysql
+      - C:/Users/kogor/Desktop/Programming/個人專題/SimpleReactProject/back-end/src/main/resources/static/mysql/sample_data/:/docker-entrypoint-initdb.d/
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  backend:
+    image: simplereactproject-jar:001
+    container_name: simplereactproject
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/todos?serverTimezone=Asia/Taipei
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    depends_on:
+      - database
+
+  frontend:
+    image: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+
+networks:
+  simplereactprojectnetwork001:
+
+volumes:
+  simplereactprojectvolume001:
