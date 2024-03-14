@@ -1,7 +1,7 @@
 package com.react.SimpleProject.controller;
 
-import org.sam.todos.entity.Book;
-import org.sam.todos.repository.BookRepository;
+import com.react.SimpleProject.entity.Book;
+import com.react.SimpleProject.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @CrossOrigin
 @RestController
